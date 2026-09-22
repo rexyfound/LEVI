@@ -2,8 +2,16 @@ import os
 import json
 from pathlib import Path
 
-from dotenv import load_dotenv
-from openai import OpenAI
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    def load_dotenv(*args, **kwargs):
+        return False
+
+try:
+    from openai import OpenAI
+except ImportError:
+    OpenAI = None
 
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
@@ -12,10 +20,6 @@ ENV_FILE = ROOT_DIR / ".env"
 load_dotenv(dotenv_path=ENV_FILE, override=True)
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-
-print(f"[GEMINI] ENV path: {ENV_FILE}")
-print(f"[GEMINI] ENV exists: {ENV_FILE.exists()}")
-print(f"[GEMINI] API key loaded: {bool(GEMINI_API_KEY)}")
 
 
 def _dump_extra_content(call):

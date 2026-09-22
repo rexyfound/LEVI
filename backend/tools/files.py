@@ -1,13 +1,25 @@
+import os
 from pending_actions import create_pending_action
 from pathlib import Path
 
 WORKSPACE = Path("D:/Projects").resolve()
+DOCUMENTS = Path(os.getenv("LEVI_DOCUMENTS_ROOT", Path.home() / "Documents")).expanduser().resolve()
+ALLOWED_ROOTS = (WORKSPACE, DOCUMENTS)
+
+
+def _resolve_target(path):
+    """Resolve a user path inside the project or the user's Documents folder."""
+    requested = Path(str(path or ".")).expanduser()
+    target = requested.resolve() if requested.is_absolute() else (WORKSPACE / requested).resolve()
+    if not any(target == root or root in target.parents for root in ALLOWED_ROOTS):
+        return None
+    return target
 
 
 def list_files(path="."):
-    target = (WORKSPACE / path).resolve()
+    target = _resolve_target(path)
 
-    if not target.is_relative_to(WORKSPACE):
+    if target is None:
         return {"error": "Access outside workspace denied"}
 
     if not target.exists():
@@ -29,9 +41,9 @@ def list_files(path="."):
 
 
 def read_file(path):
-    target = (WORKSPACE / path).resolve()
+    target = _resolve_target(path)
 
-    if not target.is_relative_to(WORKSPACE):
+    if target is None:
         return {"error": "Access outside workspace denied"}
 
     if not target.exists() or not target.is_file():
@@ -46,9 +58,9 @@ def read_file(path):
     }
 
 def write_file(path, content):
-    target = (WORKSPACE / path).resolve()
+    target = _resolve_target(path)
 
-    if not target.is_relative_to(WORKSPACE):
+    if target is None:
         return {"error": "Access outside workspace denied"}
 
     if target.exists():
@@ -72,22 +84,6 @@ def write_file(path, content):
             parents=True,
             exist_ok=True
         )
-
-        target.write_text(
-            content,
-            encoding="utf-8"
-        )
-
-        return {
-            "success": True,
-            "action": "created",
-            "path": str(target)
-        }
-
-    except Exception as e:
-        return {"error": str(e)}
-    try:
-        target.parent.mkdir(parents=True, exist_ok=True)
 
         target.write_text(
             content,

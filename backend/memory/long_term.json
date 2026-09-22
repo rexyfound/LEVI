@@ -1,0 +1,27 @@
+{
+  "user": {
+    "name": "Sir",
+    "preferences": {}
+  },
+  "assistant": {
+    "name": "LEVI",
+    "version": "Mark L Engine"
+  },
+  "active_projects": [],
+  "sessions": [
+    {
+      "id": "sess_1786834227",
+      "timestamp": 1786834227.785647,
+      "summary": "User requested building Mark-L features for LEVI.",
+      "consumed": true
+    }
+  ],
+  "monitored_topics": [
+    {
+      "topic": "Autonomous AI Agents",
+      "last_headline": "www.forbes.com/topics/agentic-ai/: Explore the forefront of Agentic AI news with Forbes&#x27; comprehensive coverage tailored to keep you ahead of emerging trends and expert predictions with in-depth analysis.",
+      "last_checked": 1786989922.041489,
+      "added_at": 1786834227.8475401
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Base surface — all elements share this hue */
+  --nm-base: #141C28;
+  --nm-base-mid: #111827;
+  --nm-base-light: #1A2436;
+  --nm-base-lighter: #1E2A3D;
+
+  /* Neumorphic shadow pair */
+  --nm-shadow-dark: rgba(0, 0, 0, 0.55);
+  --nm-shadow-light: rgba(255, 255, 255, 0.042);
+
+  /* Raised surface shadow */
+  --nm-raised: 6px 6px 14px var(--nm-shadow-dark), -3px -3px 8px var(--nm-shadow-light);
+  /* Raised large */
+  --nm-raised-lg: 10px 10px 24px var(--nm-shadow-dark), -5px -5px 14px var(--nm-shadow-light);
+  /* Inset / pressed */
+  --nm-inset: inset 4px 4px 10px var(--nm-shadow-dark), inset -2px -2px 6px var(--nm-shadow-light);
+  /* Inset subtle */
+  --nm-inset-sm: inset 2px 2px 6px var(--nm-shadow-dark), inset -1px -1px 4px var(--nm-shadow-light);
+  /* Flat — barely any depth */
+  --nm-flat: 2px 2px 6px var(--nm-shadow-dark), -1px -1px 4px var(--nm-shadow-light);
+
+  /* Accent colours */
+  --violet: #8B5CF6;
+  --violet-light: #A78BFA;
+  --violet-dim: rgba(139, 92, 246, 0.18);
+  --cyan: #4CC9F0;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+
+  /* Text */
+  --text-primary: #CBD5E1;
+  --text-secondary: #7A8A9E;
+  --text-dim: #3D4F63;
+
+  /* Legacy aliases used in NeuralCore */
+  --bg-base: var(--nm-base);
+  --bg-navy: var(--nm-base-mid);
+  --bg-panel: var(--nm-base-light);
+  --bg-panel-raised: var(--nm-base-lighter);
+  --border: rgba(255,255,255,0.05);
+  --border-bright: rgba(255,255,255,0.08);
+  --violet-light: #A78BFA;
+
+  --font-ui: 'Exo 2', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #04080F;
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--violet); }
+
+/* ── Neural core animations ─────────────────── */
+@keyframes orbit-slow    { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes orbit-reverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+@keyframes pulse-ring    { 0%,100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.04); } }
+@keyframes pulse-core    { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+@keyframes particle-blink{ 0%,100% { opacity: 0.2; } 50% { opacity: 1; } }
+@keyframes blink-cursor  { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes status-dot    { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes voice-wave    { 0%,100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+@keyframes fade-in-up    { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes nm-glow-pulse {
+  0%,100% { box-shadow: var(--nm-raised), 0 0 0 rgba(139,92,246,0); }
+  50%      { box-shadow: var(--nm-raised), 0 0 16px rgba(139,92,246,0.22); }
+}
+
+.animate-orbit-slow    { animation: orbit-slow 18s linear infinite; }
+.animate-orbit-medium  { animation: orbit-slow 10s linear infinite; }
+.animate-orbit-fast    { animation: orbit-slow 6s linear infinite; }
+.animate-orbit-reverse { animation: orbit-reverse 14s linear infinite; }
+.animate-pulse-ring    { animation: pulse-ring 3s ease-in-out infinite; }
+.animate-pulse-core    { animation: pulse-core 2s ease-in-out infinite; }
+.animate-blink         { animation: blink-cursor 1s step-end infinite; }
+.animate-status        { animation: status-dot 2s ease-in-out infinite; }
+.animate-voice         { animation: voice-wave 0.8s ease-in-out infinite; }
+.animate-fade-up       { animation: fade-in-up 0.25s ease-out both; }
+.animate-glow          { animation: nm-glow-pulse 2.5s ease-in-out infinite; }
+
+/* ── Neumorphic utility classes ─────────────── */
+.nm-raised  { box-shadow: var(--nm-raised); }
+.nm-raised-lg { box-shadow: var(--nm-raised-lg); }
+.nm-inset   { box-shadow: var(--nm-inset); }
+.nm-inset-sm{ box-shadow: var(--nm-inset-sm); }
+.nm-flat    { box-shadow: var(--nm-flat); }
+.nm-surface { background: var(--nm-base-light); }
+.nm-surface-mid { background: var(--nm-base-mid); }
+
+.mono { font-family: var(--font-mono); }

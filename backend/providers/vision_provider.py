@@ -1,14 +1,31 @@
-import base64
-from google import genai
-from google.genai import types
-from dotenv import load_dotenv
 import os
+
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    def load_dotenv(*args, **kwargs):
+        return False
+
+try:
+    from google import genai
+    from google.genai import types
+except ImportError:
+    genai = None
+    types = None
 
 load_dotenv()
 
-client = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
-)
+_client = None
+
+
+def _get_client():
+    global _client
+    if _client is None:
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise RuntimeError("GEMINI_API_KEY is not configured")
+        _client = genai.Client(api_key=api_key)
+    return _client
 
 
 def analyze_image(path, prompt):
@@ -16,7 +33,7 @@ def analyze_image(path, prompt):
     with open(path, "rb") as f:
         image = f.read()
 
-    response = client.models.generate_content(
+    response = _get_client().models.generate_content(
         model="gemini-2.5-flash",
         contents=[
             types.Part.from_bytes(
@@ -27,4 +44,4 @@ def analyze_image(path, prompt):
         ]
     )
 
-    return response.text
+    return response.text

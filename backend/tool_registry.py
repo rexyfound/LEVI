@@ -3,13 +3,13 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "list_files",
-            "description": "List files and directories inside the D:/Projects workspace.",
+                    "description": "List files and directories inside D:/Projects or the user's Documents folder.",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "path": {
                         "type": "string",
-                        "description": "Relative path inside D:/Projects",
+                        "description": "Path inside D:/Projects or the user's Documents folder",
                     }
                 },
                 "required": ["path"],
@@ -20,13 +20,13 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "read_file",
-            "description": "Read a text file inside the D:/Projects workspace.",
+                    "description": "Read a text file inside D:/Projects or the user's Documents folder.",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "path": {
                         "type": "string",
-                        "description": "Relative file path inside D:/Projects",
+                        "description": "File path inside D:/Projects or the user's Documents folder",
                     }
                 },
                 "required": ["path"],
@@ -37,13 +37,13 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "write_file",
-            "description": "Create or modify a text file inside the D:/Projects workspace.",
+                    "description": "Create or modify a text file inside D:/Projects or the user's Documents folder.",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "path": {
                         "type": "string",
-                        "description": "Relative file path inside D:/Projects",
+                        "description": "File path inside D:/Projects or the user's Documents folder",
                     },
                     "content": {
                         "type": "string",
@@ -416,19 +416,243 @@ TOOLS = [
     }
 },
 {
-    "type":"function",
-    "function":{
-        "name":"vision_analyze",
-        "description":"Analyze the current desktop screenshot.",
-        "parameters":{
-            "type":"object",
-            "properties":{
-                "prompt":{
-                    "type":"string"
+    "type": "function",
+    "function": {
+        "name": "vision_analyze",
+        "description": "Analyze the current desktop screenshot.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "prompt": {
+                    "type": "string"
                 }
             },
-            "required":["prompt"]
+            "required": ["prompt"]
         }
     }
 },
+{
+    "type": "function",
+    "function": {
+        "name": "set_master_volume",
+        "description": "Set system master volume percentage (0 to 100).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "level": {
+                    "type": "integer",
+                    "description": "Volume percentage from 0 to 100"
+                }
+            },
+            "required": ["level"]
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "mute_volume",
+        "description": "Mute or toggle audio output.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "mute": {
+                    "type": "boolean",
+                    "description": "True to mute, False to unmute"
+                }
+            }
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "set_screen_brightness",
+        "description": "Set display brightness percentage (0 to 100).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "level": {
+                    "type": "integer",
+                    "description": "Brightness percentage from 0 to 100"
+                }
+            },
+            "required": ["level"]
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "system_power_action",
+        "description": "Execute system power commands like lock or sleep.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string",
+                    "enum": ["lock", "sleep"],
+                    "description": "Power action: 'lock' or 'sleep'"
+                }
+            },
+            "required": ["action"]
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "media_control",
+        "description": "Control media playback (play_pause, next, prev, stop).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "command": {
+                    "type": "string",
+                    "enum": ["play_pause", "next", "prev", "stop"],
+                    "description": "Media command"
+                }
+            },
+            "required": ["command"]
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "parallel_web_search",
+        "description": "Perform fast multi-threaded search across DuckDuckGo and Wikipedia.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "Search query"
+                }
+            },
+            "required": ["query"]
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "monitor_topic",
+        "description": "Add a topic for LEVI to monitor daily in the background. (Crypto and trading topics are blocked).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "topic": {
+                    "type": "string",
+                    "description": "Topic or keyword to monitor"
+                }
+            },
+            "required": ["topic"]
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "unmonitor_topic",
+        "description": "Stop monitoring a previously added topic.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "topic": {
+                    "type": "string",
+                    "description": "Topic to remove"
+                }
+            },
+            "required": ["topic"]
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "list_monitored_topics",
+        "description": "List all currently monitored topics.",
+        "parameters": {
+            "type": "object",
+            "properties": {}
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "set_autostart",
+        "description": "Enable or disable LEVI auto-starting on Windows startup.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "enable": {
+                    "type": "boolean",
+                    "description": "True to enable Windows startup auto-start, False to disable"
+                }
+            },
+            "required": ["enable"]
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "get_autostart_status",
+        "description": "Check if Windows auto-start is currently enabled.",
+        "parameters": {
+            "type": "object",
+            "properties": {}
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "analyze_clipboard",
+        "description": "Read and classify the current Windows clipboard content (URL, Code Snippet, Error Traceback, Text).",
+        "parameters": {
+            "type": "object",
+            "properties": {}
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "update_assistant_config",
+        "description": "Customize assistant name (e.g. LEVI, JARVIS, MARK L), user name, voice profile, or personality rules.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "assistant_name": { "type": "string" },
+                "user_name": { "type": "string" },
+                "personality_rules": { "type": "string" },
+                "voice_profile": { "type": "string" }
+            }
+        }
+    }
+},
+{
+    "type": "function",
+    "function": {
+        "name": "get_assistant_config",
+        "description": "Get current assistant name, user name, and customization profile.",
+        "parameters": {
+            "type": "object",
+            "properties": {}
+        }
+        }
+}
 ]
+
+
+# Tool allowlists keep AI-side research separate from explicit local computer
+# actions. MCP tools are intentionally excluded from research mode as well.
+RESEARCH_TOOL_NAMES = {"parallel_web_search", "memory_search", "memory_write"}
+RESEARCH_TOOLS = [
+    tool for tool in TOOLS
+    if tool.get("function", {}).get("name") in RESEARCH_TOOL_NAMES
+]
+ACTION_TOOLS = TOOLS

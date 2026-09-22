@@ -1,8 +1,11 @@
+import threading
+
 from playwright.sync_api import sync_playwright
 
 _playwright = None
 _browser = None
 _page = None
+_browser_lock = threading.Lock()
 
 INTERACTIVE_SELECTOR = (
     "input, textarea, button, select, a[href], "
@@ -13,16 +16,17 @@ INTERACTIVE_SELECTOR = (
 def _get_page():
     global _playwright, _browser, _page
 
-    if _playwright is None:
-        _playwright = sync_playwright().start()
+    with _browser_lock:
+        if _playwright is None:
+            _playwright = sync_playwright().start()
 
-    if _browser is None:
-        _browser = _playwright.chromium.launch(headless=False)
+        if _browser is None:
+            _browser = _playwright.chromium.launch(headless=False)
 
-    if _page is None or _page.is_closed():
-        _page = _browser.new_page()
+        if _page is None or _page.is_closed():
+            _page = _browser.new_page()
 
-    return _page
+        return _page
 
 
 def browser_open(url):
@@ -194,8 +198,9 @@ def browser_type_by_text(label, text):
             }
 
         # Try aria-label
+        safe_label = label.replace("\\", "\\\\").replace('"', '\\"')
         locator = page.locator(
-            f'[aria-label*="{label}" i]'
+            f'[aria-label*="{safe_label}" i]'
         )
 
         if locator.count() > 0:
@@ -247,8 +252,9 @@ def browser_press(label, key):
             }
 
         # Try aria-label
+        safe_label = label.replace("\\", "\\\\").replace('"', '\\"')
         locator = page.locator(
-            f'[aria-label*="{label}" i]'
+            f'[aria-label*="{safe_label}" i]'
         )
 
         if locator.count() > 0:

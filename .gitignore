@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
+backend/voice/.kokoro_runtime/
+backend/voice/.voice_cache/
 
 # Environment
 .env

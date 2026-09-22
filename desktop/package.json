@@ -1,0 +1,46 @@
+{
+  "name": "levi-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Native Windows desktop shell for LEVI",
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "dev": "set LEVI_DESKTOP_DEV=1&& electron .",
+    "dist": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^43.4.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.levi.desktop",
+    "productName": "LEVI",
+    "asar": true,
+    "files": [
+      "main.cjs",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../backend",
+        "to": "backend",
+        "filter": [
+          "**/*",
+          "!**/__pycache__/**",
+          "!**/*.pyc",
+          "!**/.voice_cache/**"
+        ]
+      },
+      {
+        "from": "../frontend/dist",
+        "to": "frontend/dist"
+      }
+    ],
+    "win": {
+      "target": [
+        "portable"
+      ]
+    }
+  }
+}

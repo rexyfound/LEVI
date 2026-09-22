@@ -1,0 +1,45 @@
+import axios from 'axios';
+import { AgentResponse, PendingAction } from './types';
+
+export interface IAgentService {
+  runAgent(message: string): Promise<AgentResponse>;
+  approveAction(actionId: string, approved: boolean): Promise<{ success: boolean; status?: string; action?: string; error?: string }>;
+}
+
+const API_BASE_URL = 'http://localhost:8000';
+
+class RestAgentService implements IAgentService {
+  async runAgent(message: string): Promise<AgentResponse> {
+    try {
+      const response = await axios.post<AgentResponse>(`${API_BASE_URL}/agent`, { message }, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 60000,
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error('[AgentService] Error running agent:', error);
+      return {
+        status: 'error',
+        error: error.response?.data?.detail || error.message || 'Failed to connect to LEVI core service.'
+      };
+    }
+  }
+
+  async approveAction(actionId: string, approved: boolean): Promise<{ success: boolean; status?: string; error?: string }> {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/approve`, {
+        action_id: actionId,
+        approved
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error('[AgentService] Error approving action:', error);
+      return {
+        success: false,
+        error: error.response?.data?.detail || error.message || 'Approval request failed.'
+      };
+    }
+  }
+}
+
+export const agentService: IAgentService = new RestAgentService();
