@@ -42,8 +42,8 @@ LEVI is a personal AI project focused on building a practical and user-friendly 
 
 | Technology                     | Purpose              |
 | ------------------------------ | -------------------- |
-| **[Your Frontend Technology]** | User Interface       |
-| **[Your Backend Technology]**  | Application Logic    |
+| **         TypeScript       ** | User Interface       |
+| **         Python           ** | Application Logic    |
 | **AI API**                     | AI / LLM Integration |
 | **Git & GitHub**               | Version Control      |
 | **[Database, if any]**         | Data Storage         |
